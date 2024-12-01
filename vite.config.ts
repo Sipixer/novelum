@@ -4,6 +4,8 @@ import {
 } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import path from "path"
+
 
 declare module "@remix-run/cloudflare" {
   interface Future {
@@ -12,6 +14,11 @@ declare module "@remix-run/cloudflare" {
 }
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./app"),
+    },
+  },
   plugins: [
     remixCloudflareDevProxy(),
     remix({

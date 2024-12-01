@@ -1,70 +1,131 @@
-import type { ActionFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
+import type { MetaFunction } from "@remix-run/cloudflare";
+import { Layout } from "~/components/Layout";
+import ProductImage from "@/assets/images/IMG_0130.jpg";
+import { Bluetooth, RadioIcon, WifiIcon } from "lucide-react";
+import { HeroSection } from "~/components/HeroSection";
+import { ProductSection } from "~/components/ProductSection";
+import { RetroExperienceSection } from "~/components/RetroExperienceSection";
+import FeatureImage from "@/assets/images/IMG_9758.jpg";
+import { CTASection } from "~/components/CTASection";
+import { TestimonialSection } from "~/components/TestimonialSection";
+import { ContactForm } from "~/components/ContactForm";
+import {
+  SignedIn,
+  UserButton,
+  SignOutButton,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+} from "@clerk/remix";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Novelum" },
+    {
+      name: "description",
+      content:
+        "Bienvenue sur Novelum, la boutique de radios vintage réinventées pour l'ère numérique.",
+    },
   ];
 };
 
-import { LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { useLoaderData } from "@remix-run/react";
-import { drizzle } from "drizzle-orm/d1";
-import { usersTable } from "src/db/schema";
+const PRODUCTS = [
+  {
+    name: "ClassicWave 1960",
+    price: "299€",
+    features: ["FM/AM", "Wi-Fi", "Bluetooth"],
+    image: ProductImage,
+  },
+  {
+    name: "VinylVibe 1975",
+    price: "349€",
+    features: ["Platine vinyle", "Haut-parleurs intégrés", "Bluetooth"],
+    image: ProductImage,
+  },
+  {
+    name: "SoundScape 1980",
+    price: "249€",
+    features: ["Radio-réveil", "Projection de l'heure", "Streaming"],
+    image: ProductImage,
+  },
+  {
+    name: "SoundScape 1980",
+    price: "249€",
+    features: ["Radio-réveil", "Projection de l'heure", "Streaming"],
+    image: ProductImage,
+  },
+];
 
-export const loader = async ({ context }: LoaderFunctionArgs) => {
-  const { env } = context.cloudflare;
-  const db = drizzle(env.DB);
-  const result = await db.select().from(usersTable).all();
-  return Response.json(result);
-};
+const FEATURE_LIST = [
+  {
+    icon: RadioIcon,
+    title: "Design Authentique",
+    description: "Chaque pièce est une œuvre d'art vintage",
+  },
+  {
+    icon: WifiIcon,
+    title: "Connectivité Moderne",
+    description: "Streaming et radios en ligne à portée de main",
+  },
+  {
+    icon: Bluetooth,
+    title: "Compatibilité Universelle",
+    description: "Connectez tous vos appareils sans fil",
+  },
+];
+
+const TESTIMONIALS = [
+  {
+    name: "Marie L.",
+    comment:
+      "Ma ClassicWave 1960 est devenue la pièce maîtresse de mon salon. Le son est incroyable !",
+  },
+  {
+    name: "Thomas B.",
+    comment:
+      "J'adore pouvoir écouter mes playlists Spotify sur une radio qui a l'air tout droit sortie des années 70.",
+  },
+  {
+    name: "Sophie M.",
+    comment:
+      "Le service client est exceptionnel. Ils m'ont aidée à choisir le modèle parfait pour mon intérieur vintage.",
+  },
+];
 
 export default function Index() {
-  const results = useLoaderData<typeof loader>();
-  const onButtonClick = async () => {
-    // do a post request to the action function
-    const response = await fetch("/count", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ route: "/_action" }),
-    });
-    const text = await response.text();
-    console.log(text);
-  };
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="flex flex-col items-center gap-16">
-        <header className="flex flex-col items-center gap-9">
-          <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
-            Welcome ffto <span className="sr-only">Remix</span>
-          </h1>
-          <button onClick={onButtonClick} className="btn">
-            Click me
-          </button>
-          <pre className="text-sm text-gray-600 dark:text-gray-300">
-            {JSON.stringify(results, null, 2)}
-          </pre>
-          <div className="h-[144px] w-[434px]">
-            <img
-              src="/logo-light.png"
-              alt="Remix"
-              className="block w-full dark:hidden"
-            />
-            <img
-              src="/logo-dark.png"
-              alt="Remix"
-              className="hidden w-full dark:block"
-            />
+    <Layout className="flex-grow">
+      <HeroSection />
+      <ProductSection products={PRODUCTS} />
+      <RetroExperienceSection
+        FEATURE_LIST={FEATURE_LIST}
+        image={FeatureImage}
+      />
+      <CTASection />
+      <TestimonialSection TESTIMONIALS={TESTIMONIALS} />
+      <div>
+        <h1>Index Route</h1>
+        <SignedIn>
+          <p>You are signed in!</p>
+          <div>
+            <p>View your profile here</p>
+            <UserButton />
           </div>
-        </header>
-        <nav className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-gray-200 p-6 dark:border-gray-700">
-          <p className="leading-6 text-gray-700 dark:text-gray-200">
-            What&apos;s next?
-          </p>
-        </nav>
+          <div>
+            <SignOutButton />
+          </div>
+        </SignedIn>
+        <SignedOut>
+          <p>You are signed out</p>
+          <div>
+            <SignInButton />
+          </div>
+          <div>
+            <SignUpButton />
+          </div>
+        </SignedOut>
       </div>
-    </div>
+      <ContactForm />
+    </Layout>
   );
 }
