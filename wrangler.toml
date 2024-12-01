@@ -20,8 +20,8 @@ migrations_dir = "drizzle"
 
 ######## PRODUCTION environment config ########
 
-# [env.production.vars]
-# API_KEY = "abc123"
+[env.production.vars]
+CLERK_PUBLISHABLE_KEY = "pk_test_YWRhcHRpbmctZ2Vja28tNzcuY2xlcmsuYWNjb3VudHMuZGV2JA"
 
 # [[env.production.kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"
