@@ -103,7 +103,7 @@ export default function Index() {
       />
       <CTASection />
       <TestimonialSection TESTIMONIALS={TESTIMONIALS} />
-      <div>
+      {/* <div>
         <h1>Index Route</h1>
         <SignedIn>
           <p>You are signed in!</p>
@@ -124,7 +124,7 @@ export default function Index() {
             <SignUpButton />
           </div>
         </SignedOut>
-      </div>
+      </div> */}
       <ContactForm />
     </Layout>
   );
