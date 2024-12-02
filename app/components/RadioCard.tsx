@@ -33,7 +33,7 @@ export const RadioCard: React.FC<RadioCardProps> = ({
         <div className="p-4">
           <h3 className="text-xl font-semibold mb-2 text-stone-800">{name}</h3>
           <div className="flex justify-between items-center mb-3">
-            <p className="text-2xl font-bold text-red-600">{price}</p>
+            <p className="text-2xl font-bold text-primary">{price}</p>
           </div>
           <ul>
             {features.map((feature, index) => (

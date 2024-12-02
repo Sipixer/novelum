@@ -24,9 +24,7 @@ export const Footer = () => {
                 <li key={link.text}>
                   <Link
                     to={link.to}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-red-400 transition-colors"
+                    className="hover:text-primary transition-colors"
                   >
                     {link.text}
                   </Link>
@@ -47,7 +45,7 @@ export const Footer = () => {
                   to={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="transition-colors hover:text-red-400"
+                  className="transition-colors hover:text-primary"
                 >
                   {social.name}
                 </Link>

@@ -58,8 +58,8 @@ const FeatureItem = ({
       animate={isInView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.5, delay }}
     >
-      <div className="bg-red-100 rounded-full p-3">
-        <feature.icon className="h-6 w-6 text-red-600" />
+      <div className="bg-white rounded-full p-3">
+        <feature.icon className="h-6 w-6 text-primary" />
       </div>
       <div>
         <h3 className="text-xl font-semibold mb-2 text-stone-800">

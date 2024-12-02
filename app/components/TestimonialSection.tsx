@@ -45,7 +45,7 @@ const TestimonialCard = ({
       transition={{ duration: 0.5, delay }}
     >
       <p className="text-stone-600 mb-4">&quot;{testimonial.comment}&quot;</p>
-      <p className="font-semibold text-red-600">{testimonial.name}</p>
+      <p className="font-semibold text-primary">{testimonial.name}</p>
     </motion.div>
   );
 };
