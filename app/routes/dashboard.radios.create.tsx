@@ -4,7 +4,6 @@ import { drizzle } from "drizzle-orm/d1";
 import { RadioFormType, radioSchema } from "~/schema/radioFormSchema";
 import { radioTable } from "src/db/schema";
 import { toast } from "sonner";
-import sharp from "sharp";
 
 export default function Dahboard() {
   const onSubmit = async (data: RadioFormType, images: File[]) => {
@@ -72,28 +71,33 @@ export async function action({ context, request }: ActionFunctionArgs) {
 
   for (const image of parsedBody.images) {
     try {
-      // Génère un UUID unique pour le fichier
+      // Générer un UUID pour chaque image
       const uuid = crypto.randomUUID();
       const filename = `${uuid}.png`;
 
-      // Utilise Sharp pour traiter l'image
-      const buffer = await sharp(image)
-        .resize({ width: 800 })
-        .toFormat("png")
-        .toBuffer();
+      // Vérification que l'image est bien au format base64 ou binaire
+      let imageBuffer;
+      if (image.startsWith("data:image/png;base64,")) {
+        // Si l'image est en base64, on la convertit en buffer
+        const base64Data = image.replace("data:image/png;base64,", "");
+        imageBuffer = Buffer.from(base64Data, "base64");
+      } else {
+        // Si l'image est déjà un buffer, on l'utilise tel quel
+        imageBuffer = image; // Assumes image is already a Buffer
+      }
 
-      // Upload de l'image dans le bucket R2
-      await bucket.put(filename, buffer, {
+      // Téléverser l'image dans le bucket R2
+      await bucket.put(filename, imageBuffer, {
         httpMetadata: {
-          contentType: "image/png",
+          contentType: "image/png", // Vérifie que c'est bien du PNG
         },
       });
 
-      // Ajoute le nom du fichier à la liste
       newImages.push(filename);
     } catch (error) {
-      console.error(`Erreur lors du traitement de l'image : ${error}`);
-      // Tu peux ajouter une gestion d'erreur ici (par exemple, ignorer cette image ou stopper l'exécution)
+      console.error("Error uploading image:", error);
+      // Optionnel : Continuer avec les autres images ou arrêter
+      throw new Error("Image upload failed, aborting.");
     }
   }
 
