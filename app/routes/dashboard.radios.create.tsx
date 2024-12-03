@@ -4,6 +4,7 @@ import { drizzle } from "drizzle-orm/d1";
 import { RadioFormType, radioSchema } from "~/schema/radioFormSchema";
 import { radioTable } from "src/db/schema";
 import { toast } from "sonner";
+import { detectType } from "~/lib/cloudflare-utils";
 
 export default function Dashboard() {
   const onSubmit = async (data: RadioFormType, images: File[]) => {
@@ -58,7 +59,6 @@ export async function action({ context, request }: ActionFunctionArgs) {
 
   let body;
   const contentType = request.headers.get("content-type");
-
   // Vérification du type de contenu
   if (contentType === null) {
     return new Response("No body to parse", { status: 400 });
@@ -72,29 +72,17 @@ export async function action({ context, request }: ActionFunctionArgs) {
 
   // Récupération de la bucket R2
   const bucket = env.novelum;
-  const newImages = [];
-
-  for (const image of parsedBody.images) {
-    try {
-      // Générer un nom unique pour le fichier
-      const uuid = crypto.randomUUID();
-      const filename = `${uuid}.png`;
-
-      console.log(`Uploading image with filename: ${filename}`);
-
-      await bucket.put(filename, image.split(",")[1]);
-
-      console.log(`Image uploaded successfully: `);
-
-      newImages.push(filename);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      return new Response(`Erreur lors de l'upload de l'image: ${error}`, {
-        status: 500,
-      });
-    }
+  const base64 = parsedBody.images[0].split(",")[1];
+  const type = detectType(base64);
+  if (!type) {
+    return new Response("Type d'image non supporté", { status: 400 });
   }
+  const image = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
 
+  const bukcetresult = await bucket.put("test." + type.suffix, image, {
+    httpMetadata: { contentType: type.mimeType },
+  });
+  console.log(bukcetresult);
   try {
     // Enregistrer les informations dans la base de données
     const result = await db.insert(radioTable).values({
@@ -103,7 +91,7 @@ export async function action({ context, request }: ActionFunctionArgs) {
       caracteristics: parsedBody.caracteristics,
       description: parsedBody.description,
       features: JSON.stringify(parsedBody.features),
-      images: JSON.stringify(newImages), // Liste des noms des fichiers images
+      images: "",
     });
 
     if (result.success) {

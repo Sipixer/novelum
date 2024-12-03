@@ -1,28 +1,20 @@
-/**
- * readRequestBody reads in the incoming request body
- * Use await readRequestBody(..) in an async function to get the string
- * @param {Request} request the incoming request to read from
- */
-export async function readRequestBody(request: Request) {
-    const contentType = request.headers.get("content-type");
-    if (contentType === null) {
-        // No body to parse
-        return null;
-    }
-    if (contentType.includes("application/json")) {
-        return JSON.stringify(await request.json());
-    } else if (contentType.includes("application/text")) {
-        return request.text();
-    } else if (contentType.includes("text/html")) {
-        return request.text();
-    } else if (contentType.includes("form")) {
-        const formData = await request.formData();
-        const body: { [key: string]: unknown } = {};
-        for (const entry of formData.entries()) {
-            body[entry[0]] = entry[1];
+export type Type = {
+    mimeType: string
+    suffix: string
+}
+
+const signatures: Record<string, Type> = {
+    R0lGODdh: { mimeType: 'image/gif', suffix: 'gif' },
+    R0lGODlh: { mimeType: 'image/gif', suffix: 'gif' },
+    iVBORw0KGgo: { mimeType: 'image/png', suffix: 'png' },
+    '/9j/': { mimeType: 'image/jpg', suffix: 'jpg' },
+    'UklGRg==': { mimeType: 'image/webp', suffix: 'webp' }
+}
+
+export const detectType = (b64: string): Type | undefined => {
+    for (const s in signatures) {
+        if (b64.indexOf(s) === 0) {
+            return signatures[s]
         }
-        return JSON.stringify(body);
-    } else {
-        return "a file";
     }
 }
