@@ -9,6 +9,10 @@ database_name = "prod-d1-novelum"
 database_id = "65616c94-d0e9-49c5-a744-38203f0eb799"
 migrations_dir = "drizzle"
 
+[[r2_buckets]]
+bucket_name = "novelum"
+binding = "novelum"
+
 ######## PREVIEW environment config ########
 
 # [env.preview.vars]

@@ -8,6 +8,13 @@
       "when": 1732888879183,
       "tag": "0000_flippant_chimera",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1733257605328,
+      "tag": "0001_regular_moira_mactaggert",
+      "breakpoints": true
     }
   ]
 }

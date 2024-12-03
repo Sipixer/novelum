@@ -8,6 +8,7 @@ import {
 } from "@remix-run/react";
 import { rootAuthLoader } from "@clerk/remix/ssr.server";
 import { ClerkApp } from "@clerk/remix";
+import { Toaster } from "@/components/ui/sonner";
 
 import "./tailwind.css";
 
@@ -38,6 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         {children}
         <ScrollRestoration />
+        <Toaster />
         <Scripts />
       </body>
     </html>
