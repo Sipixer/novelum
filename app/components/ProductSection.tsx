@@ -16,7 +16,7 @@ export const ProductSection = ({ products }: ProductSectionProps) => {
         <h2 className="text-4xl font-bold text-center mb-12 text-stone-800">
           Nos Pépites Rétro
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
           {products.map((product, index) => (
             <RadioCard
               key={index}

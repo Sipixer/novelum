@@ -10,7 +10,9 @@ export const Layout = ({ children, ...props }: LayoutProps) => {
   return (
     <div>
       <Header />
-      <main {...props}>{children}</main>
+      <main {...props} className={`min-h-screen ${props.className}`}>
+        {children}
+      </main>
       <Footer />
     </div>
   );

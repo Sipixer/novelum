@@ -37,7 +37,7 @@ export const RestaurationCarousel = () => {
     >
       <CarouselContent>
         {images.map((image, index) => (
-          <CarouselItem key={index} className=" basis-1/4">
+          <CarouselItem key={index} className="sm:basis-2/4 xl:basis-1/4">
             <img
               loading="lazy"
               src={image}

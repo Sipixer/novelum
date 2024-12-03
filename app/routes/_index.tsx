@@ -9,14 +9,6 @@ import FeatureImage from "@/assets/images/IMG_9758.jpg";
 import { CTASection } from "~/components/CTASection";
 import { TestimonialSection } from "~/components/TestimonialSection";
 import { ContactForm } from "~/components/ContactForm";
-import {
-  SignedIn,
-  UserButton,
-  SignOutButton,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-} from "@clerk/remix";
 
 export const meta: MetaFunction = () => {
   return [
@@ -103,28 +95,6 @@ export default function Index() {
       />
       <CTASection />
       <TestimonialSection TESTIMONIALS={TESTIMONIALS} />
-      {/* <div>
-        <h1>Index Route</h1>
-        <SignedIn>
-          <p>You are signed in!</p>
-          <div>
-            <p>View your profile here</p>
-            <UserButton />
-          </div>
-          <div>
-            <SignOutButton />
-          </div>
-        </SignedIn>
-        <SignedOut>
-          <p>You are signed out</p>
-          <div>
-            <SignInButton />
-          </div>
-          <div>
-            <SignUpButton />
-          </div>
-        </SignedOut>
-      </div> */}
       <ContactForm />
     </Layout>
   );
