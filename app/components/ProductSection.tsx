@@ -1,15 +1,34 @@
 import { RadioCard } from "./RadioCard";
+import ProductImage from "@/assets/images/IMG_0130.jpg";
 
-type ProductSectionProps = {
-  products: {
-    name: string;
-    price: string;
-    features: string[];
-    image: string;
-  }[];
-};
+const PRODUCTS = [
+  {
+    name: "ClassicWave 1960",
+    price: "299€",
+    features: ["FM/AM", "Wi-Fi", "Bluetooth"],
+    image: ProductImage,
+  },
+  {
+    name: "VinylVibe 1975",
+    price: "349€",
+    features: ["Platine vinyle", "Haut-parleurs intégrés", "Bluetooth"],
+    image: ProductImage,
+  },
+  {
+    name: "SoundScape 1980",
+    price: "249€",
+    features: ["Radio-réveil", "Projection de l'heure", "Streaming"],
+    image: ProductImage,
+  },
+  {
+    name: "SoundScape 1980",
+    price: "249€",
+    features: ["Radio-réveil", "Projection de l'heure", "Streaming"],
+    image: ProductImage,
+  },
+];
 
-export const ProductSection = ({ products }: ProductSectionProps) => {
+export const ProductSection = () => {
   return (
     <section className="py-20 bg-stone-200">
       <div className="container mx-auto px-4">
@@ -17,7 +36,7 @@ export const ProductSection = ({ products }: ProductSectionProps) => {
           Nos Pépites Rétro
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-          {products.map((product, index) => (
+          {PRODUCTS.map((product, index) => (
             <RadioCard
               key={index}
               name={product.name}

@@ -1,20 +1,27 @@
 import { motion, useInView } from "framer-motion";
-import { LucideIcon } from "lucide-react";
+import { Bluetooth, LucideIcon, RadioIcon, WifiIcon } from "lucide-react";
 import { useRef } from "react";
+import FeatureImage from "@/assets/images/IMG_9758.jpg";
 
-type RetroExperienceSectionProps = {
-  FEATURE_LIST: {
-    title: string;
-    description: string;
-    icon: LucideIcon;
-  }[];
-  image: string;
-};
+const FEATURE_LIST = [
+  {
+    icon: RadioIcon,
+    title: "Design Authentique",
+    description: "Chaque pièce est une œuvre d'art vintage",
+  },
+  {
+    icon: WifiIcon,
+    title: "Connectivité Moderne",
+    description: "Streaming et radios en ligne à portée de main",
+  },
+  {
+    icon: Bluetooth,
+    title: "Compatibilité Universelle",
+    description: "Connectez tous vos appareils sans fil",
+  },
+];
 
-export const RetroExperienceSection = ({
-  FEATURE_LIST,
-  image,
-}: RetroExperienceSectionProps) => (
+export const RetroExperienceSection = () => (
   <section className="py-20 bg-gradient-to-b from-stone-100 to-stone-200">
     <div className="container mx-auto px-4">
       <h2 className="text-4xl font-bold text-center mb-12 text-stone-800">
@@ -23,7 +30,7 @@ export const RetroExperienceSection = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div>
           <img
-            src={image}
+            src={FeatureImage}
             alt="Radio Vintage"
             className="rounded-lg shadow-lg"
           />

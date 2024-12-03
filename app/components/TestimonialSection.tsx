@@ -1,11 +1,25 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-export const TestimonialSection = ({
-  TESTIMONIALS,
-}: {
-  TESTIMONIALS: { name: string; comment: string }[];
-}) => {
+const TESTIMONIALS = [
+  {
+    name: "Marie L.",
+    comment:
+      "Ma ClassicWave 1960 est devenue la pièce maîtresse de mon salon. Le son est incroyable !",
+  },
+  {
+    name: "Thomas B.",
+    comment:
+      "J'adore pouvoir écouter mes playlists Spotify sur une radio qui a l'air tout droit sortie des années 70.",
+  },
+  {
+    name: "Sophie M.",
+    comment:
+      "Le service client est exceptionnel. Ils m'ont aidée à choisir le modèle parfait pour mon intérieur vintage.",
+  },
+];
+
+export const TestimonialSection = () => {
   return (
     <section className="py-20 bg-stone-100">
       <div className="container mx-auto px-4">
