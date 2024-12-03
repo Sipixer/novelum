@@ -87,7 +87,7 @@ export async function action({ context, request }: ActionFunctionArgs) {
     await bucket.put(filename, imageArray, {
       httpMetadata: { contentType: type.mimeType },
     });
-    newImage.push(filename);
+    newImage.push(`https://cdn.novelum-radio.fr/${filename}`);
   }
 
   try {
