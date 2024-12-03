@@ -4,6 +4,7 @@ import { drizzle } from "drizzle-orm/d1";
 import { RadioFormType, radioSchema } from "~/schema/radioFormSchema";
 import { radioTable } from "src/db/schema";
 import { toast } from "sonner";
+import sharp from "sharp";
 
 export default function Dahboard() {
   const onSubmit = async (data: RadioFormType, images: File[]) => {
@@ -70,17 +71,33 @@ export async function action({ context, request }: ActionFunctionArgs) {
   const newImages = [];
 
   for (const image of parsedBody.images) {
-    const uuid = crypto.randomUUID();
-    const filename = `${uuid}.png`;
+    try {
+      // Génère un UUID unique pour le fichier
+      const uuid = crypto.randomUUID();
+      const filename = `${uuid}.png`;
 
-    await bucket.put(filename, image, {
-      httpMetadata: {
-        contentType: "image/png",
-      },
-    });
-    newImages.push(filename);
+      // Utilise Sharp pour traiter l'image
+      const buffer = await sharp(image)
+        .resize({ width: 800 })
+        .toFormat("png")
+        .toBuffer();
+
+      // Upload de l'image dans le bucket R2
+      await bucket.put(filename, buffer, {
+        httpMetadata: {
+          contentType: "image/png",
+        },
+      });
+
+      // Ajoute le nom du fichier à la liste
+      newImages.push(filename);
+    } catch (error) {
+      console.error(`Erreur lors du traitement de l'image : ${error}`);
+      // Tu peux ajouter une gestion d'erreur ici (par exemple, ignorer cette image ou stopper l'exécution)
+    }
   }
 
+  // Enregistrement dans la base de données
   const result = await db.insert(radioTable).values({
     name: parsedBody.name,
     price: parsedBody.price,
