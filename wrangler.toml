@@ -3,6 +3,7 @@ name = "novelum"
 compatibility_date = "2024-11-27"
 pages_build_output_dir = "./build/client"
 
+# Configuration globale
 [[d1_databases]]
 binding = "DB"
 database_name = "prod-d1-novelum"
@@ -24,6 +25,19 @@ binding = "novelum"
 
 ######## PRODUCTION environment config ########
 
+[env.production]
+# Ajouter ici les configurations manquantes
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "prod-d1-novelum"
+database_id = "65616c94-d0e9-49c5-a744-38203f0eb799"
+migrations_dir = "drizzle"
+
+[[env.production.r2_buckets]]
+bucket_name = "novelum"
+binding = "novelum"
+
+# Variables spécifiques à la production
 [env.production.vars]
 CLERK_PUBLISHABLE_KEY = "pk_test_YWRhcHRpbmctZ2Vja28tNzcuY2xlcmsuYWNjb3VudHMuZGV2JA"
 
