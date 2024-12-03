@@ -72,17 +72,24 @@ export async function action({ context, request }: ActionFunctionArgs) {
 
   // Récupération de la bucket R2
   const bucket = env.novelum;
-  const base64 = parsedBody.images[0].split(",")[1];
-  const type = detectType(base64);
-  if (!type) {
-    return new Response("Type d'image non supporté", { status: 400 });
-  }
-  const image = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+  const newImage = [];
 
-  const bukcetresult = await bucket.put("test." + type.suffix, image, {
-    httpMetadata: { contentType: type.mimeType },
-  });
-  console.log(bukcetresult);
+  for (const image of parsedBody.images) {
+    const base64 = image.split(",")[1];
+    const type = detectType(base64);
+    if (!type) {
+      return new Response("Type d'image non supporté", { status: 400 });
+    }
+    const imageArray = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+    const uuid = crypto.randomUUID();
+    const filename = `${uuid}.${type.suffix}`;
+
+    await bucket.put(filename, imageArray, {
+      httpMetadata: { contentType: type.mimeType },
+    });
+    newImage.push(filename);
+  }
+
   try {
     // Enregistrer les informations dans la base de données
     const result = await db.insert(radioTable).values({
@@ -91,7 +98,7 @@ export async function action({ context, request }: ActionFunctionArgs) {
       caracteristics: parsedBody.caracteristics,
       description: parsedBody.description,
       features: JSON.stringify(parsedBody.features),
-      images: "",
+      images: JSON.stringify(newImage),
     });
 
     if (result.success) {

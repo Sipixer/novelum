@@ -19,7 +19,14 @@ export const loader: LoaderFunction = async ({ context }) => {
   const db = drizzle(env.DB);
   const radios = await db.select().from(radioTable);
 
-  return Response.json(radios);
+  const radiosWithCdn = radios.map((radio) => ({
+    ...radio,
+    images: JSON.parse(radio.images || "").map((image: string) => {
+      return `https://cdn.novelum-radio.fr/${image}`;
+    }),
+  }));
+
+  return Response.json(radiosWithCdn);
 };
 type RadioModel = InferSelectModel<typeof radioTable>;
 export default function RadioTable() {
