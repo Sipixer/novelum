@@ -89,7 +89,6 @@ export async function action({ context, request }: ActionFunctionArgs) {
     });
     newImage.push(`https://cdn.novelum-radio.fr/${filename}`);
   }
-
   try {
     // Enregistrer les informations dans la base de données
     const result = await db.insert(radioTable).values({

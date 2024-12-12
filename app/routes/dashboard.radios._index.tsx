@@ -18,7 +18,7 @@ export const loader: LoaderFunction = async ({ context }) => {
   const env = context.cloudflare.env as Env;
   const db = drizzle(env.DB);
   const radios = await db.select().from(radioTable);
-
+  console.log(radios);
   return Response.json(radios);
 };
 type RadioModel = InferSelectModel<typeof radioTable>;
@@ -45,26 +45,36 @@ export default function RadioTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {radios.map((radio) => (
-              <TableRow key={radio.id}>
-                <TableCell>
-                  <img
-                    src={JSON.parse(radio.images || "")[0]}
-                    alt={radio.name || "Radio Vintage"}
-                    width={50}
-                    height={50}
-                    className="rounded-md"
-                  />
-                </TableCell>
-                <TableCell className="font-medium">{radio.name}</TableCell>
-                <TableCell>
-                  ${parseFloat(radio.price || "0")?.toFixed(2)}
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {radio.description}
-                </TableCell>
-              </TableRow>
-            ))}
+            {radios.map((radio) => {
+              //get image with JSON PARSE but need to be catched
+              let image = "";
+              try {
+                image = JSON.parse(radio.images || "")[0];
+              } catch (error) {
+                console.log(error);
+              }
+              console.log(image);
+              return (
+                <TableRow key={radio.id}>
+                  <TableCell>
+                    <img
+                      src={image}
+                      alt={radio.name || "Radio Vintage"}
+                      width={50}
+                      height={50}
+                      className="rounded-md"
+                    />
+                  </TableCell>
+                  <TableCell className="font-medium">{radio.name}</TableCell>
+                  <TableCell>
+                    ${radio.price ? (radio.price / 100).toFixed(2) : "0.00"}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {radio.description}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

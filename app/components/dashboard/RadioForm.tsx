@@ -31,7 +31,7 @@ export function RadioForm({ onSubmitForm }: RadioFormProps) {
     resolver: zodResolver(radioSchema),
     defaultValues: {
       name: "",
-      price: "",
+      price: 0,
       description: "",
       features: ["", "", ""],
       caracteristics: "",
@@ -94,7 +94,7 @@ export function RadioForm({ onSubmitForm }: RadioFormProps) {
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Prix</FormLabel>
+                <FormLabel>Prix (en centimes)</FormLabel>
                 <FormControl>
                   <Input placeholder="240 €" type="number" {...field} />
                 </FormControl>

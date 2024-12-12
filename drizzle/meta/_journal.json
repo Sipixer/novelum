@@ -15,6 +15,13 @@
       "when": 1733257605328,
       "tag": "0001_regular_moira_mactaggert",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1734027458344,
+      "tag": "0002_left_microchip",
+      "breakpoints": true
     }
   ]
 }

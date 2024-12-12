@@ -11,7 +11,7 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 export const radioTable = sqliteTable("radio", {
     id: integer("id").primaryKey(),
     name: text(),
-    price: text(),
+    price: integer(),
     description: text(),
     features: text(),
     caracteristics: text(),
