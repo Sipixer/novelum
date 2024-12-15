@@ -4,6 +4,7 @@ import { Card, CardContent } from "~/components/ui/card";
 import { useState } from "react";
 import { InferSelectModel } from "drizzle-orm";
 import { radioTable } from "src/db/schema";
+import { useNavigate } from "@remix-run/react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -26,10 +27,19 @@ export function RadioDisplay({
 }: {
   radio: InferSelectModel<typeof radioTable>;
 }) {
+  const navigate = useNavigate();
   const images = JSON.parse(radio.images || "[]") as string[];
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
   const features = JSON.parse(radio.features || "[]") as string[];
+
+  const onBuy = () => {
+    alert(
+      "Nous travaillons sur cette fonctionnalité. Merci de votre patience. \n Vous pouvez passer votre commande par email à novelum.radio@gmail.com ou remplir le formulaire de contact."
+    );
+    //navigate to #contact-form
+    navigate("#contact-form");
+  };
 
   return (
     <motion.div
@@ -97,7 +107,7 @@ export function RadioDisplay({
             </CardContent>
           </Card>
 
-          <Button size="lg" className="w-full text-lg">
+          <Button size="lg" className="w-full text-lg" onClick={onBuy}>
             ACHETER MAINTENANT
           </Button>
 

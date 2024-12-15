@@ -38,6 +38,9 @@ type ProductSectionProps = {
   radios: RadioModel[];
 };
 export const ProductSection = ({ radios }: ProductSectionProps) => {
+  if (radios.length === 0) {
+    return null;
+  }
   return (
     <section className="py-20 bg-stone-200">
       <div className="container mx-auto px-4">

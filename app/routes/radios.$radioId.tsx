@@ -9,7 +9,7 @@ import { TestimonialSection } from "~/components/TestimonialSection";
 import { RetroExperienceSection } from "~/components/RetroExperienceSection";
 import { LoaderFunction } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import { eq, InferSelectModel, and } from "drizzle-orm";
+import { eq, InferSelectModel, and, desc, ne } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { radioTable } from "src/db/schema";
 
@@ -20,7 +20,7 @@ export const loader: LoaderFunction = async ({ context, params }) => {
   }
   const env = context.cloudflare.env as Env;
   const db = drizzle(env.DB);
-  const radios = await db
+  const selectedRadio = await db
     .select()
     .from(radioTable)
     .where(
@@ -30,19 +30,35 @@ export const loader: LoaderFunction = async ({ context, params }) => {
         eq(radioTable.id, parseInt(radioId))
       )
     );
-  return Response.json(radios[0]);
+
+  const lastestRadios = await db
+    .select()
+    .from(radioTable)
+    .where(
+      and(
+        eq(radioTable.public, true),
+        eq(radioTable.is_sold, false),
+        ne(radioTable.id, parseInt(radioId))
+      )
+    )
+    .orderBy(desc(radioTable.created_at));
+
+  return Response.json({ selectedRadio: selectedRadio[0], lastestRadios });
 };
 
 type RadioModel = InferSelectModel<typeof radioTable>;
 
 export default function RadioProduct() {
-  const radio = useLoaderData<RadioModel>();
+  const { selectedRadio, lastestRadios } = useLoaderData<{
+    selectedRadio: RadioModel;
+    lastestRadios: RadioModel[];
+  }>();
   return (
     <Layout>
-      <RadioDisplay radio={radio} />
+      <RadioDisplay radio={selectedRadio} />
       <RetroExperienceSection />
       <TestimonialSection />
-      {/* <ProductSection /> */}
+      <ProductSection radios={lastestRadios} />
 
       <ContactForm />
     </Layout>
