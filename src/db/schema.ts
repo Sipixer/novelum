@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 // export const radioSchema = z.object({
@@ -16,4 +17,14 @@ export const radioTable = sqliteTable("radio", {
     features: text(),
     caracteristics: text(),
     images: text(),
+});
+
+export const contactFormTable = sqliteTable("contact_messages", {
+    id: integer("id").primaryKey(),
+    email: text(),
+    message: text(),
+    location: text(),
+    created_at: text('timestamp')
+        .notNull()
+        .default(sql`(current_timestamp)`),
 });

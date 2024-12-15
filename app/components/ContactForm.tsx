@@ -14,6 +14,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useLocation } from "@remix-run/react";
+import { toast } from "sonner";
+import { useState } from "react";
 
 export const ContactForm = () => {
   const form = useForm<ContactFormType>({
@@ -25,13 +27,29 @@ export const ContactForm = () => {
   });
 
   const location = useLocation();
-  function onSubmit(values: ContactFormType) {
-    console.log(
-      "form submitted from",
-      location.pathname,
-      "with values",
-      values
-    );
+  async function onSubmit(values: ContactFormType) {
+    const promise = fetch("/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...values, location: location.pathname }),
+    });
+    toast.promise(promise, {
+      loading: "Envoi du message...",
+      success: "Votre message a bien été envoyé.",
+      error: (error) => `Erreur lors de l'envoi du message: ${error}`,
+    });
+    promise
+      .then(() => {
+        form.reset();
+        alert("Votre message a bien été envoyé.");
+      })
+      .catch(() => {
+        alert(
+          "Erreur lors de l'envoi du message. \n Veuillez réessayer plus tard."
+        );
+      });
   }
 
   return (
@@ -61,7 +79,7 @@ export const ContactForm = () => {
               <FormItem>
                 <FormLabel>Message</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Votre message" {...field} />
+                  <Textarea placeholder="Votre message" rows={6} {...field} />
                 </FormControl>
                 <FormDescription>
                   N&apos;hésitez pas à nous poser toutes vos questions.
@@ -70,7 +88,9 @@ export const ContactForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            Submit
+          </Button>
         </form>
       </Form>
     </div>

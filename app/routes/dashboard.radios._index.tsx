@@ -33,7 +33,6 @@ export default function RadioTable() {
           </Link>
         </div>
         <Table>
-          <TableCaption>A basic table of products</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Image</TableHead>
