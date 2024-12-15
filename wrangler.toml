@@ -39,7 +39,7 @@ binding = "novelum"
 
 # Variables spécifiques à la production
 [env.production.vars]
-CLERK_PUBLISHABLE_KEY = "pk_test_YWRhcHRpbmctZ2Vja28tNzcuY2xlcmsuYWNjb3VudHMuZGV2JA"
+CLERK_PUBLISHABLE_KEY = "pk_live_Y2xlcmsubm92ZWx1bS1yYWRpby5mciQ"
 
 # [[env.production.kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"
