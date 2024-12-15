@@ -8,7 +8,7 @@ const signatures: Record<string, Type> = {
     R0lGODlh: { mimeType: 'image/gif', suffix: 'gif' },
     iVBORw0KGgo: { mimeType: 'image/png', suffix: 'png' },
     '/9j/': { mimeType: 'image/jpg', suffix: 'jpg' },
-    'UklGRg==': { mimeType: 'image/webp', suffix: 'webp' }
+    "UklGR": { mimeType: 'image/jpg', suffix: 'jpg' }
 }
 
 export const detectType = (b64: string): Type | undefined => {

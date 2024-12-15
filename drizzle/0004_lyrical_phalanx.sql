@@ -1,1 +1,0 @@
-ALTER TABLE `contact_messages` ADD `timestamp` text DEFAULT (current_timestamp) NOT NULL;

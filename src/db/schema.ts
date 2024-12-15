@@ -17,6 +17,12 @@ export const radioTable = sqliteTable("radio", {
     features: text(),
     caracteristics: text(),
     images: text(),
+    public: integer({ mode: 'boolean' }).default(false),
+    is_sold: integer({ mode: 'boolean' }).default(false),
+    sold_at: text('sold_at').default(""),
+    created_at: text('created_at')
+        .notNull()
+        .default(sql`(current_timestamp)`),
 });
 
 export const contactFormTable = sqliteTable("contact_messages", {
@@ -24,7 +30,7 @@ export const contactFormTable = sqliteTable("contact_messages", {
     email: text(),
     message: text(),
     location: text(),
-    created_at: text('timestamp')
+    created_at: text('created_at')
         .notNull()
         .default(sql`(current_timestamp)`),
 });

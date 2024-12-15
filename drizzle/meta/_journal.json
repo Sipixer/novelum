@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1732888879183,
-      "tag": "0000_flippant_chimera",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1733257605328,
-      "tag": "0001_regular_moira_mactaggert",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1734027458344,
-      "tag": "0002_left_microchip",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1734289543891,
-      "tag": "0003_bouncy_moondragon",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1734290440316,
-      "tag": "0004_lyrical_phalanx",
+      "when": 1734297709387,
+      "tag": "0000_yielding_tombstone",
       "breakpoints": true
     }
   ]

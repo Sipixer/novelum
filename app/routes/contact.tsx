@@ -1,9 +1,6 @@
-import { RadioForm } from "~/components/dashboard/RadioForm";
 import { ActionFunctionArgs } from "@remix-run/cloudflare";
 import { drizzle } from "drizzle-orm/d1";
-import { radioSchema } from "~/schema/radioFormSchema";
-import { contactFormTable, radioTable } from "src/db/schema";
-import { detectType } from "~/lib/cloudflare-utils";
+import { contactFormTable } from "src/db/schema";
 import { contactFormSchema } from "~/schema/contactFormSchema";
 
 export async function action({ context, request }: ActionFunctionArgs) {

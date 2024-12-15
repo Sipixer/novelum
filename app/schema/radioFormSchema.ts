@@ -6,7 +6,12 @@ export const radioSchema = z.object({
     description: z.string().min(10, "La description doit contenir au moins 10 caractères."),
     features: z.array(z.string()).min(1, "Au moins une fonctionnalité est requise."),
     caracteristics: z.string().min(10, "Les caractéristiques doivent contenir au moins 10 caractères."),
-    images: z.array(z.string()),
+    images: z.array(z.object({
+        base64: z.string().optional(),
+        isExisting: z.boolean(),
+        url: z.string().optional(),
+    })),
+    public: z.boolean(),
 })
 
 export type RadioFormType = z.infer<typeof radioSchema>
