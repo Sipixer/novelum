@@ -1,5 +1,10 @@
+import { LoaderFunction } from "@remix-run/cloudflare";
 import { RadioCard } from "./RadioCard";
 import ProductImage from "@/assets/images/IMG_0130.jpg";
+import { InferSelectModel } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/d1";
+import { radioTable } from "src/db/schema";
+import { useLoaderData } from "@remix-run/react";
 
 const PRODUCTS = [
   {
@@ -28,7 +33,11 @@ const PRODUCTS = [
   },
 ];
 
-export const ProductSection = () => {
+type RadioModel = InferSelectModel<typeof radioTable>;
+type ProductSectionProps = {
+  radios: RadioModel[];
+};
+export const ProductSection = ({ radios }: ProductSectionProps) => {
   return (
     <section className="py-20 bg-stone-200">
       <div className="container mx-auto px-4">
@@ -36,14 +45,8 @@ export const ProductSection = () => {
           Nos Pépites Rétro
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-          {PRODUCTS.map((product, index) => (
-            <RadioCard
-              key={index}
-              name={product.name}
-              price={product.price}
-              image={product.image}
-              features={product.features}
-            />
+          {radios.map((radio) => (
+            <RadioCard key={radio.id} radio={radio} />
           ))}
         </div>
       </div>
