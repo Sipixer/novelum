@@ -4,7 +4,7 @@ import { RadioDisplay } from "~/components/RadioDisplay";
 import { ProductSection } from "~/components/ProductSection";
 import { TestimonialSection } from "~/components/TestimonialSection";
 import { RetroExperienceSection } from "~/components/RetroExperienceSection";
-import { LoaderFunction } from "@remix-run/cloudflare";
+import { LoaderFunction, MetaFunction } from "@remix-run/cloudflare";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { eq, InferSelectModel, and, desc, ne } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
@@ -21,6 +21,42 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import Stripe from "stripe";
+
+export const meta: MetaFunction = ({ params, data }) => {
+  const loaded = data as {
+    selectedRadio: RadioModel;
+    lastestRadios: RadioModel[];
+    sessionUrl?: string;
+  };
+  const radio = loaded.selectedRadio;
+  const radioName = radio.name || "No name";
+  return [
+    { title: `${radioName} - Novelum` },
+    {
+      name: "description",
+      content: `Découvrez tous les détails de ${radioName}, une radio vintage restaurée et modernisée, parfaite pour allier style rétro et technologies actuelles. \n ${
+        radio.description
+      } \n ${radio.price && `Prix : ${radio.price / 100}`}€`,
+    },
+    { property: "og:title", content: `${radioName} - Novelum` },
+    {
+      property: "og:description",
+      content: `Découvrez tous les détails de ${radioName}, une radio vintage restaurée et modernisée, parfaite pour allier style rétro et technologies actuelles.`,
+    },
+    {
+      property: "og:url",
+      content: `${radio.images ? JSON.parse(radio.images)[0] : "ogImage"}`,
+    },
+    { property: "og:type", content: "product" },
+    { property: "og:locale", content: "fr_FR" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: `${radioName} - Novelum` },
+    {
+      name: "twitter:description",
+      content: `Découvrez tous les détails de ${radioName}, une radio vintage restaurée et modernisée, parfaite pour allier style rétro et technologies actuelles.`,
+    },
+  ];
+};
 
 export const loader: LoaderFunction = async ({ context, params, request }) => {
   const { radioId } = params;

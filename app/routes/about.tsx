@@ -16,11 +16,31 @@ import { IntroSection } from "~/components/IntroSection";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Novelum | About" },
+    { title: "À Propos de Novelum - Artisanat et Passion" },
     {
       name: "description",
       content:
-        "Découvrez notre processus de restauration et rencontrez notre équipe.",
+        "Rencontrez l'équipe derrière Novelum et explorez notre processus de restauration unique, où l'artisanat traditionnel rencontre l'innovation technologique.",
+    },
+    {
+      property: "og:title",
+      content: "À Propos de Novelum - Artisanat et Passion",
+    },
+    {
+      property: "og:description",
+      content:
+        "Rencontrez l'équipe derrière Novelum et explorez notre processus de restauration unique, où l'artisanat traditionnel rencontre l'innovation technologique.",
+    },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+    {
+      name: "twitter:title",
+      content: "À Propos de Novelum - Artisanat et Passion",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Rencontrez l'équipe derrière Novelum et explorez notre processus de restauration unique, où l'artisanat traditionnel rencontre l'innovation technologique.",
     },
   ];
 };

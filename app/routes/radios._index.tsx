@@ -10,40 +10,34 @@ import { drizzle } from "drizzle-orm/d1";
 import { radioTable } from "src/db/schema";
 import { useLoaderData } from "@remix-run/react";
 
-const PRODUCTS = [
-  {
-    name: "ClassicWave 1960",
-    price: "299€",
-    features: ["FM/AM", "Wi-Fi", "Bluetooth"],
-    image: ProductImage,
-  },
-  {
-    name: "VinylVibe 1975",
-    price: "349€",
-    features: ["Platine vinyle", "Haut-parleurs intégrés", "Bluetooth"],
-    image: ProductImage,
-  },
-  {
-    name: "SoundScape 1980",
-    price: "249€",
-    features: ["Radio-réveil", "Projection de l'heure", "Streaming"],
-    image: ProductImage,
-  },
-  {
-    name: "SoundScape 1980",
-    price: "249€",
-    features: ["Radio-réveil", "Projection de l'heure", "Streaming"],
-    image: ProductImage,
-  },
-];
-
 export const meta: MetaFunction = () => {
   return [
-    { title: "Novelum | Nos Radios" },
+    { title: "Nos Radios Vintage - Collection Unique | Novelum" },
     {
       name: "description",
       content:
-        "Envie d'une radio vintage réinventée pour l'ère numérique ? Découvrez notre collection de radios uniques et authentiques.",
+        "Parcourez notre collection de radios vintage restaurées, mêlant design rétro et fonctionnalités modernes. Chaque pièce est unique, restaurée avec passion et expertise.",
+    },
+    {
+      property: "og:title",
+      content: "Nos Radios Vintage - Collection Unique | Novelum",
+    },
+    {
+      property: "og:description",
+      content:
+        "Parcourez notre collection de radios vintage restaurées, mêlant design rétro et fonctionnalités modernes. Chaque pièce est unique, restaurée avec passion et expertise.",
+    },
+    { property: "og:url", content: "https://novelum-radio.fr/radios" },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+    {
+      name: "twitter:title",
+      content: "Nos Radios Vintage - Collection Unique | Novelum",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Parcourez notre collection de radios vintage restaurées, mêlant design rétro et fonctionnalités modernes. Chaque pièce est unique, restaurée avec passion et expertise.",
     },
   ];
 };

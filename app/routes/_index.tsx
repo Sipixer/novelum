@@ -6,22 +6,36 @@ import { RetroExperienceSection } from "~/components/RetroExperienceSection";
 import { CTASection } from "~/components/CTASection";
 import { TestimonialSection } from "~/components/TestimonialSection";
 import { ContactForm } from "~/components/ContactForm";
-import { and, asc, desc, eq, InferSelectModel } from "drizzle-orm";
+import { and, desc, eq, InferSelectModel } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { radioTable } from "src/db/schema";
 import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Novelum" },
+    { title: "Novelum - Radios Vintage Réinventées" },
     {
       name: "description",
       content:
-        "Bienvenue sur Novelum, la boutique de radios vintage réinventées pour l'ère numérique.",
+        "Découvrez Novelum, où les radios vintage retrouvent vie grâce à une restauration artisanale et des technologies modernes. Un mariage unique d'authenticité et d'innovation.",
+    },
+    { property: "og:title", content: "Novelum - Radios Vintage Réinventées" },
+    {
+      property: "og:description",
+      content:
+        "Découvrez Novelum, où les radios vintage retrouvent vie grâce à une restauration artisanale et des technologies modernes. Un mariage unique d'authenticité et d'innovation.",
+    },
+    { property: "og:url", content: "https://novelum-radio.fr/" },
+    { property: "og:type", content: "website" },
+    { property: "og:locale", content: "fr_FR" },
+    { name: "twitter:title", content: "Novelum - Radios Vintage Réinventées" },
+    {
+      name: "twitter:description",
+      content:
+        "Découvrez Novelum, où les radios vintage retrouvent vie grâce à une restauration artisanale et des technologies modernes. Un mariage unique d'authenticité et d'innovation.",
     },
   ];
 };
-
 export const loader: LoaderFunction = async ({ context }) => {
   const env = context.cloudflare.env as Env;
   const db = drizzle(env.DB);
