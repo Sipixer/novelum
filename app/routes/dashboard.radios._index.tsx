@@ -56,7 +56,6 @@ export default function RadioTable() {
               } catch (error) {
                 console.log(error);
               }
-              console.log(image);
               return (
                 <TableRow key={radio.id}>
                   <TableCell>
@@ -86,28 +85,19 @@ export default function RadioTable() {
                         {Intl.DateTimeFormat("fr-FR", {
                           dateStyle: "short",
                           timeStyle: "short",
-                        }).format(new Date(radio.sold_at || ""))}
+                        }).format(new Date(radio.sold_at || "0"))}
                       </span>
                     )}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     {radio.description}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="flex items-center">
                     <Link to={`/dashboard/radios/${radio.id}/edit`}>
                       <Button variant={"outline"}>
                         <PencilLine />
                       </Button>
                     </Link>
-                    <Button
-                      variant={"destructive"}
-                      className="ml-2"
-                      onClick={() => {
-                        alert("Not implemented yet");
-                      }}
-                    >
-                      <Trash />
-                    </Button>
                   </TableCell>
                 </TableRow>
               );

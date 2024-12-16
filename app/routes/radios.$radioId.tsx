@@ -27,7 +27,7 @@ export const loader: LoaderFunction = async ({ context, params, request }) => {
   if (!radioId) {
     throw new Error("radioId is required");
   }
-  const env = context.cloudflare.env as Env;
+  const env = context.cloudflare.env;
   const db = drizzle(env.DB);
   const radios = await db
     .select()
@@ -77,6 +77,7 @@ export const loader: LoaderFunction = async ({ context, params, request }) => {
         quantity: 1,
       },
     ],
+    allow_promotion_codes: true,
     payment_method_types: ["card", "paypal", "link", "klarna"],
     shipping_address_collection: {
       allowed_countries: ["FR"],

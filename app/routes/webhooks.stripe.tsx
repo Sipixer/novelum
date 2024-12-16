@@ -1,11 +1,56 @@
 import { ActionFunctionArgs } from "@remix-run/cloudflare";
-import { eq } from "drizzle-orm";
+import { eq, InferSelectModel } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { radioTable } from "src/db/schema";
 import Stripe from "stripe";
 
-export default function NotFound() {
-  return <div>Not found</div>;
+async function sendDiscordNotification(
+  radio: InferSelectModel<typeof radioTable>,
+  price: string,
+  discordWebhookUrl: string
+) {
+  const embed = {
+    title: "Nouvelle Vente!",
+    color: 0x00ff00, // Vert
+    fields: [
+      {
+        name: "Radio",
+        value: `${radio.name || "Radio"} (#${radio.id})`,
+        inline: true,
+      },
+      {
+        name: "Prix",
+        value: price,
+        inline: true,
+      },
+      {
+        name: "Date de vente",
+        value: new Date().toLocaleString(),
+        inline: true,
+      },
+    ],
+    timestamp: new Date().toISOString(),
+  };
+
+  const message = {
+    embeds: [embed],
+  };
+
+  try {
+    const response = await fetch(discordWebhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(message),
+    });
+
+    if (!response.ok) {
+      console.error("Erreur lors de l'envoi de la notification Discord");
+    }
+  } catch (error) {
+    console.error("Erreur lors de l'envoi de la notification Discord:", error);
+  }
 }
 
 export async function action({ context, request }: ActionFunctionArgs) {
@@ -13,6 +58,7 @@ export async function action({ context, request }: ActionFunctionArgs) {
   const stripe = new Stripe(context.cloudflare.env.STRIPE_SECRET_KEY);
   const db = drizzle(env.DB);
   const secret = env.STRIPE_WEBHOOK_SIGNING_SECRET;
+  const discordWebhookUrl = env.DISCORD_PAYMENT_WEBHOOK;
   if (!secret) {
     console.error("No secret");
     return new Response("No secret", {
@@ -47,8 +93,6 @@ export async function action({ context, request }: ActionFunctionArgs) {
 
   if (event.type == "checkout.session.completed") {
     const checkouSession = event.data.object;
-    // Fulfill the purchase...
-    console.log("Fulfill the purchase", checkouSession);
 
     const lineItems = await stripe.checkout.sessions.listLineItems(
       checkouSession.id,
@@ -89,10 +133,21 @@ export async function action({ context, request }: ActionFunctionArgs) {
         console.error("Radio already sold");
         throw new Error("Radio already sold");
       }
+
+      // Format price
+      const formattedPrice = new Intl.NumberFormat("fr-FR", {
+        style: "currency",
+        currency: item.currency || "EUR",
+      }).format(item.amount_total ? item.amount_total / 100 : 0);
+
+      // Envoyer la notification Discord
+      await sendDiscordNotification(radio, formattedPrice, discordWebhookUrl);
+
       const result = await db
         .update(radioTable)
         .set({
           is_sold: true,
+          sold_at: new Date().toISOString(),
         })
         .where(eq(radioTable.id, radio.id));
       if (!result.success) {
