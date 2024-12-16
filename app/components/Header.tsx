@@ -28,7 +28,7 @@ export const Header = () => {
           to="/"
           className="flex items-center space-x-2 hover:text-stone-400"
         >
-          <span className="text-xl font-bold">Novelum</span>
+          <span className="text-3xl font-bold">Novelum</span>
         </Link>
 
         {/* Desktop Menu + CTA */}
@@ -45,9 +45,9 @@ export const Header = () => {
               </li>
             ))}
           </ul>
-          {/* <Link to="/moderniser">
+          <Link to="/moderniser">
             <Button>Moderniser votre radio</Button>
-          </Link> */}
+          </Link>
         </div>
 
         {/* Burger Menu Button */}
@@ -80,14 +80,14 @@ export const Header = () => {
                 </li>
               ))}
               {/* CTA in Mobile Menu */}
-              {/* <li>
+              <li>
                 <Link
                   to="/moderniser"
                   onClick={() => setIsMenuOpen(false)} // Close menu on click
                 >
                   <Button className="w-full">Moderniser votre radio</Button>
                 </Link>
-              </li> */}
+              </li>
             </ul>
           </div>
         )}

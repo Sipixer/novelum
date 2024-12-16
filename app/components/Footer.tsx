@@ -32,9 +32,12 @@ export const Footer = () => {
               ))}
             </ul>
           </div>
-          <div>
+          <div className="flex flex-col">
             <h3 className="text-xl font-bold mb-4">Nous contacter</h3>
             <a href="mailto:novelum.radio@gmail.com">novelum.radio@gmail.com</a>
+            <Link to="/cgu" className="hover:text-primary transition-colors">
+              CGU
+            </Link>
           </div>
           <div>
             <h3 className="text-xl font-bold mb-4">Suivez-nous</h3>

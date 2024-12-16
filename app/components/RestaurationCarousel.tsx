@@ -25,7 +25,7 @@ const images = [
 export const RestaurationCarousel = () => {
   return (
     <Carousel
-      className="py-20"
+      className="py-20 md:block hidden"
       opts={{
         loop: true,
       }}

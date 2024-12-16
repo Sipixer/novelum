@@ -89,7 +89,7 @@ export const ContactForm = () => {
             )}
           />
           <Button type="submit" disabled={form.formState.isSubmitting}>
-            Submit
+            Envoyer
           </Button>
         </form>
       </Form>
