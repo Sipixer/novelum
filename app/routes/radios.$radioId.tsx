@@ -1,35 +1,41 @@
 import { Layout } from "~/components/Layout";
-import Radio2 from "@/assets/images/IMG_9758.jpg";
-import Radio3 from "@/assets/images/IMG_0130.jpg";
-import Radio4 from "@/assets/images/IMG_9838.jpg";
 import { ContactForm } from "~/components/ContactForm";
 import { RadioDisplay } from "~/components/RadioDisplay";
 import { ProductSection } from "~/components/ProductSection";
 import { TestimonialSection } from "~/components/TestimonialSection";
 import { RetroExperienceSection } from "~/components/RetroExperienceSection";
 import { LoaderFunction } from "@remix-run/cloudflare";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { eq, InferSelectModel, and, desc, ne } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { radioTable } from "src/db/schema";
+import { stripe } from "~/lib/stripe";
+import { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog";
+import { Button } from "~/components/ui/button";
 
-export const loader: LoaderFunction = async ({ context, params }) => {
+export const loader: LoaderFunction = async ({ context, params, request }) => {
   const { radioId } = params;
   if (!radioId) {
     throw new Error("radioId is required");
   }
   const env = context.cloudflare.env as Env;
   const db = drizzle(env.DB);
-  const selectedRadio = await db
+  const radios = await db
     .select()
     .from(radioTable)
     .where(
-      and(
-        eq(radioTable.public, true),
-        eq(radioTable.is_sold, false),
-        eq(radioTable.id, parseInt(radioId))
-      )
+      and(eq(radioTable.public, true), eq(radioTable.id, parseInt(radioId)))
     );
+  const selectedRadio = radios[0];
 
   const lastestRadios = await db
     .select()
@@ -42,25 +48,107 @@ export const loader: LoaderFunction = async ({ context, params }) => {
       )
     )
     .orderBy(desc(radioTable.created_at));
+  if (!selectedRadio || !selectedRadio.price) {
+    throw new Error("Radio not found");
+  }
+  if (selectedRadio.is_sold) {
+    return Response.json({
+      selectedRadio: selectedRadio,
+      lastestRadios,
+    });
+  }
 
-  return Response.json({ selectedRadio: selectedRadio[0], lastestRadios });
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: "eur",
+          product_data: {
+            name: selectedRadio.name || "No name",
+            description: selectedRadio.description || "No description",
+            images: selectedRadio.images
+              ? JSON.parse(selectedRadio.images)
+              : [],
+            metadata: { radioId: selectedRadio.id },
+          },
+          unit_amount: selectedRadio.price,
+        },
+        quantity: 1,
+      },
+    ],
+    payment_method_types: ["card", "paypal", "link", "klarna"],
+    shipping_address_collection: {
+      allowed_countries: ["FR"],
+    },
+    payment_intent_data: {
+      capture_method: "manual",
+    },
+    mode: "payment",
+    success_url: `${request.url}?status=success`,
+    cancel_url: `${request.url}?status=cancel`,
+  });
+
+  return Response.json({
+    selectedRadio: selectedRadio,
+    lastestRadios,
+    sessionUrl: session.url,
+  });
 };
 
 type RadioModel = InferSelectModel<typeof radioTable>;
 
 export default function RadioProduct() {
-  const { selectedRadio, lastestRadios } = useLoaderData<{
+  const { selectedRadio, lastestRadios, sessionUrl } = useLoaderData<{
     selectedRadio: RadioModel;
     lastestRadios: RadioModel[];
+    sessionUrl?: string;
   }>();
+  const searchParams = useSearchParams();
+  const status = searchParams[0].get("status");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (status === "success") {
+      setIsModalOpen(true);
+    }
+  }, [status]);
   return (
     <Layout>
-      <RadioDisplay radio={selectedRadio} />
+      <RadioDisplay radio={selectedRadio} sessionUrl={sessionUrl} />
       <RetroExperienceSection />
       <TestimonialSection />
       <ProductSection radios={lastestRadios} />
 
       <ContactForm />
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Merci pour votre commande !</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            <p>
+              Nous vous remercions d'avoir passé commande. Vous recevrez sous
+              peu un e-mail après la validation de votre commande. Le débit sera
+              effectué à ce moment-là.
+            </p>
+            <p>
+              Nous faisons tout notre possible pour vous envoyer votre radio dès
+              que possible.
+            </p>
+            <p>
+              En cas de besoin, n'hésitez pas à nous contacter à :{" "}
+              <a href="mailto:novelum.radio@gmail.com">
+                novelum.radio@gmail.com
+              </a>
+            </p>
+          </DialogDescription>
+          <DialogFooter>
+            <DialogClose>
+              <Button>OK</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 }

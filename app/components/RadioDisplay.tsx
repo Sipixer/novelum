@@ -4,7 +4,7 @@ import { Card, CardContent } from "~/components/ui/card";
 import { useState } from "react";
 import { InferSelectModel } from "drizzle-orm";
 import { radioTable } from "src/db/schema";
-import { useNavigate } from "@remix-run/react";
+import { Link, useNavigate } from "@remix-run/react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -24,22 +24,15 @@ const item = {
 
 export function RadioDisplay({
   radio,
+  sessionUrl,
 }: {
   radio: InferSelectModel<typeof radioTable>;
+  sessionUrl?: string;
 }) {
-  const navigate = useNavigate();
   const images = JSON.parse(radio.images || "[]") as string[];
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
   const features = JSON.parse(radio.features || "[]") as string[];
-
-  const onBuy = () => {
-    alert(
-      "Nous travaillons sur cette fonctionnalité. Merci de votre patience. \n Vous pouvez passer votre commande par email à novelum.radio@gmail.com ou remplir le formulaire de contact."
-    );
-    //navigate to #contact-form
-    navigate("#contact-form");
-  };
 
   return (
     <motion.div
@@ -106,10 +99,22 @@ export function RadioDisplay({
               Livraison en 4 - 5 jours ouvré partout en France
             </CardContent>
           </Card>
-
-          <Button size="lg" className="w-full text-lg" onClick={onBuy}>
-            ACHETER MAINTENANT
-          </Button>
+          {radio.is_sold || !sessionUrl ? (
+            <Button
+              disabled
+              size="lg"
+              variant={"outline"}
+              className="w-full text-lg"
+            >
+              RUPTURE DE STOCK
+            </Button>
+          ) : (
+            <Link to={sessionUrl} className="block text-accent underline">
+              <Button size="lg" className="w-full text-lg">
+                ACHETER MAINTENANT
+              </Button>
+            </Link>
+          )}
 
           <div className="space-y-4">
             <h2 className="text-2xl font-semibold">Caracteristique</h2>
