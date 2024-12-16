@@ -9,7 +9,6 @@ import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { eq, InferSelectModel, and, desc, ne } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { radioTable } from "src/db/schema";
-import { stripe } from "~/lib/stripe";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -21,6 +20,7 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
+import Stripe from "stripe";
 
 export const loader: LoaderFunction = async ({ context, params, request }) => {
   const { radioId } = params;
@@ -58,6 +58,7 @@ export const loader: LoaderFunction = async ({ context, params, request }) => {
     });
   }
 
+  const stripe = new Stripe(context.cloudflare.env.STRIPE_SECRET_KEY);
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {

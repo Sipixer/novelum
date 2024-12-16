@@ -3,7 +3,6 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { radioTable } from "src/db/schema";
 import Stripe from "stripe";
-import { stripe } from "~/lib/stripe";
 
 export default function NotFound() {
   return <div>Not found</div>;
@@ -11,8 +10,9 @@ export default function NotFound() {
 
 export async function action({ context, request }: ActionFunctionArgs) {
   const { env } = context.cloudflare;
+  const stripe = new Stripe(context.cloudflare.env.STRIPE_SECRET_KEY);
   const db = drizzle(env.DB);
-  const secret = process.env.STRIPE_WEBHOOK_SIGNING_SECRET; // process.env.WEBHOOK_SIGNING_SECRET
+  const secret = env.STRIPE_WEBHOOK_SIGNING_SECRET;
   if (!secret) {
     console.error("No secret");
     return new Response("No secret", {

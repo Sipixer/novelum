@@ -4,4 +4,7 @@
 interface Env {
 	novelum: R2Bucket;
 	DB: D1Database;
+	STRIPE_PUBLIC_KEY: string;
+	STRIPE_SECRET_KEY: string;
+	STRIPE_WEBHOOK_SIGNING_SECRET: string;
 }
