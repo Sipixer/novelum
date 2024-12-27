@@ -6,18 +6,21 @@ import FeatureImage from "@/assets/images/IMG_9758.jpg";
 const FEATURE_LIST = [
   {
     icon: RadioIcon,
-    title: "Design Authentique",
-    description: "Chaque pièce est une œuvre d'art vintage",
+    title: "Authenticité Préservée",
+    description:
+      "Restauration minutieuse des postes de radio anciens, dans le respect de leur charme original.",
   },
   {
     icon: WifiIcon,
-    title: "Connectivité Moderne",
-    description: "Streaming et radios en ligne à portée de main",
+    title: "Technologie Moderne",
+    description:
+      "Intégration discrète de la connectivité Bluetooth pour une utilisation actuelle.",
   },
   {
     icon: Bluetooth,
-    title: "Compatibilité Universelle",
-    description: "Connectez tous vos appareils sans fil",
+    title: "Durabilité et Élégance",
+    description:
+      "Des pièces uniques qui allient tradition, modernité et démarche écoresponsable.",
   },
 ];
 

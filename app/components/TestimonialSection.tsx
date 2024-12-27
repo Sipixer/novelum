@@ -5,17 +5,17 @@ const TESTIMONIALS = [
   {
     name: "Marie L.",
     comment:
-      "Ma ClassicWave 1960 est devenue la pièce maîtresse de mon salon. Le son est incroyable !",
+      "Mon ancien poste TSF est devenue la pièce maîtresse de mon salon. Le son est incroyable&nbsp;!", // Utilisation du &nbsp; sans qu'il apparaisse
   },
   {
     name: "Thomas B.",
     comment:
-      "J'adore pouvoir écouter mes playlists Spotify sur une radio qui a l'air tout droit sortie des années 70.",
+      "J'adore pouvoir écouter mes playlists Spotify sur une radio qui a l'air tout droit sortie des années 70&nbsp;.", // Idem ici
   },
   {
     name: "Sophie M.",
     comment:
-      "Le service client est exceptionnel. Ils m'ont aidée à choisir le modèle parfait pour mon intérieur vintage.",
+      "Un travail d’exception, je ne pensais pas que ma radio pouvait retrouver son éclat d’antan&nbsp;😁", // &nbsp; avant l'emoji
   },
 ];
 
@@ -58,7 +58,10 @@ const TestimonialCard = ({
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay }}
     >
-      <p className="text-stone-600 mb-4">&quot;{testimonial.comment}&quot;</p>
+      <p
+        className="text-stone-600 mb-4"
+        dangerouslySetInnerHTML={{ __html: `"${testimonial.comment}"` }} // Ceci permet d'intégrer le &nbsp; sans le rendre visible
+      />
       <p className="font-semibold text-primary">{testimonial.name}</p>
     </motion.div>
   );

@@ -61,11 +61,10 @@ export default function Radios() {
       <div className="min-h-screen bg-stone-100">
         <div className="container mx-auto px-10">
           <IntroSection
-            title="Envie d'une radio vintage réinventée pour l'ère
-                numérique ? Découvrez notre collection de radios uniques et
+            title="Envie d’un poste radio modernisé ? \n Découvrez notre collection de radios uniques et
                 authentiques."
-            description="          Chaque radio est une pièce unique, restaurée à la main et
-                équipée des dernières technologies pour une expérience
+            description="Chaque radio est une pièce unique, restaurée à la main et
+                équipée de technologies pour une expérience
                 d'écoute inégalée."
             imageSrc={HeroImage}
             className="pt-14"

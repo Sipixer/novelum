@@ -114,7 +114,6 @@ export const loader: LoaderFunction = async ({ context, params, request }) => {
       },
     ],
     allow_promotion_codes: true,
-    payment_method_types: ["card", "paypal", "link", "klarna"],
     shipping_address_collection: {
       allowed_countries: ["FR"],
     },

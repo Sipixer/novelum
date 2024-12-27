@@ -55,27 +55,27 @@ export default function About() {
             description="Chaque radio est restaurée à la main par nos soins. En alliant
                 savoir-faire traditionnel et technologies modernes, nous
                 redonnons vie à ces pièces uniques."
-            imageSrc={HeroImage}
+            // imageSrc={HeroImage}
             className="pt-14"
           />
           <RestaurationCarousel />
           <div className="flex flex-col gap-8">
             <InfoRestaurationSection
               title="1. Démontage et nettoyage"
-              description="Nous démontons soigneusement chaque composant de la radio pour un nettoyage approfondi, garantissant que chaque pièce retrouve son éclat d'origine."
+              description="Nous démontons soigneusement chaque composant de la radio pour un nettoyage approfondi."
               imageSrc={DemontageImg}
               linkText="Explorer nos radios"
               reversed
             />
             <InfoRestaurationSection
-              title="2. Renovation"
+              title="2. Restauration"
               description="Le boitier et les composants sont minutieusement restaurés pour retrouver leur aspect d'origine."
               imageSrc={RenovationImg}
               linkText="Explorer nos radios"
             />
             <InfoRestaurationSection
               title="3. Modernisation"
-              description="Nous intégrons les dernières technologies pour une expérience d'écoute inégalée."
+              description="Nous intégrons les nouvelles technologies pour une expérience d'écoute unique."
               imageSrc={ModernisationImg}
               linkText="Explorer nos radios"
               reversed
@@ -91,13 +91,12 @@ export default function About() {
           <div className="space-y-16 px-6 sm:px-8 md:px-12 lg:px-20 py-12">
             {/* Section principale */}
             <IntroSection
-              title="Quand la Passion Rencontre le Savoir-Faire"
-              description="Nous sommes Robin et Jérémy, deux frères du Lot unis par une
-                  passion commune : redonner vie aux anciennes radios. Grâce à
+              title="Une Passion Commune"
+              description="Nous sommes Robin et Jérémy, deux frères du Lot. Grâce à
                   nos compétences complémentaires, nous restaurons vos appareils
                   pour leur offrir une nouvelle jeunesse, mêlant authenticité et
                   modernité."
-              imageSrc={JeremyImg}
+              // imageSrc={JeremyImg}
             />
             {/* Section secondaire */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -122,14 +121,15 @@ export default function About() {
                   className="rounded-lg shadow-lg max-h-[300px] w-full object-cover"
                 />
                 <h4 className="text-xl sm:text-2xl font-bold text-stone-800 mt-8 mb-4">
-                  Jérémy : le travail du bois dans les mains
+                  Jérémy : Ebéniste-restaurateur
                 </h4>
                 <p className="text-base sm:text-lg text-stone-600 leading-relaxed text-center md:text-left">
-                  Je suis Jérémy, spécialiste du travail manuel. Formé chez les
-                  Compagnons du Devoir, je redonne vie aux caisses en bois des
-                  radios. Chaque pièce est restaurée avec soin pour retrouver
-                  son charme d’origine, avec une finition soignée et
-                  respectueuse de son histoire.
+                  Je suis Jérémy, ébéniste restaurateur spécialisé dans la
+                  restauration de mobilier ancien. Mon travail chez Novelum
+                  consiste à redonner vie aux caisses en bois en réparant,
+                  nettoyant et sublimant leur apparence. Chaque pièce est
+                  restaurée avec soin pour préserver son authenticité et son
+                  histoire.
                 </p>
               </motion.div>
 
@@ -154,14 +154,15 @@ export default function About() {
                   className="rounded-lg shadow-lg max-h-[300px] w-full object-cover"
                 />
                 <h4 className="text-xl sm:text-2xl font-bold text-stone-800 mt-8 mb-4">
-                  Robin : la technologie dans l’âme
+                  Robin : Artisan de la modernisation électronique
                 </h4>
                 <p className="text-base sm:text-lg text-stone-600 leading-relaxed text-center md:text-left">
-                  Moi, c’est Robin. Passionné d’électronique et travaillant au
-                  CEA, j’assure la modernisation des radios. Mon objectif ?
-                  Préserver leur authenticité tout en les rendant fonctionnelles
-                  avec des systèmes Bluetooth et une optimisation sonore. Un
-                  équilibre parfait entre rétro et modernité.
+                  Moi, c’est Robin. Passionné d’électronique, j’assure la
+                  modernisation des radios. Mon travail, intégrer les nouvelles
+                  technologies d’amplification et de Bluetooth et optimiser le
+                  rendu sonore.
+                  <br />
+                  Recherchant l’équilibre parfait entre rétro et modernité.
                 </p>
               </motion.div>
             </div>

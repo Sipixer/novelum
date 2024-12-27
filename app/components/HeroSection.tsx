@@ -25,7 +25,7 @@ export const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Revivez l&apos;âge d&apos;or de la radio
+          Revivez l&apos;âge d&apos;or des radios
         </motion.h1>
         <motion.p
           className="text-xl md:text-2xl mb-8"
