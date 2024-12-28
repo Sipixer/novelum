@@ -96,7 +96,7 @@ export function RadioDisplay({
 
           <Card className="border-green-200 bg-green-50">
             <CardContent className="p-4 text-green-800">
-              Livraison en 4 - 5 jours ouvré partout en France
+              Livraison en 2 - 3 semaines partout en France
             </CardContent>
           </Card>
           {radio.is_sold || !sessionUrl ? (

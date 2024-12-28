@@ -118,7 +118,7 @@ export default function About() {
                 <img
                   src={JeremyImg}
                   alt="Jeremy Larnaudie"
-                  className="rounded-lg shadow-lg max-h-[300px] w-full object-cover"
+                  className="rounded-lg shadow-lg max-h-[600px] w-full object-cover"
                 />
                 <h4 className="text-xl sm:text-2xl font-bold text-stone-800 mt-8 mb-4">
                   Jérémy : Ebéniste-restaurateur
@@ -151,7 +151,7 @@ export default function About() {
                 <img
                   src={RobinImg}
                   alt="Robin Larnaudie"
-                  className="rounded-lg shadow-lg max-h-[300px] w-full object-cover"
+                  className="rounded-lg shadow-lg max-h-[600px] w-full object-cover"
                 />
                 <h4 className="text-xl sm:text-2xl font-bold text-stone-800 mt-8 mb-4">
                   Robin : Artisan de la modernisation électronique
