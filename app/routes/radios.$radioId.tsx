@@ -83,7 +83,8 @@ export const loader: LoaderFunction = async ({ context, params, request }) => {
         ne(radioTable.id, parseInt(radioId))
       )
     )
-    .orderBy(desc(radioTable.created_at));
+    .orderBy(desc(radioTable.created_at))
+    .limit(4);
   if (!selectedRadio || !selectedRadio.price) {
     throw new Error("Radio not found");
   }
