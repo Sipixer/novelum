@@ -45,7 +45,7 @@ export const IntroSection = ({
 					}}
 				>
 					{title.split("\\n").map((line, index) => (
-						<span key={index}>
+						<span key={line}>
 							{line}
 							<br />
 						</span>
@@ -63,7 +63,7 @@ export const IntroSection = ({
 					}}
 				>
 					{description.split("\\n").map((line, index) => (
-						<span key={index}>
+						<span key={line}>
 							{line}
 							<br />
 						</span>
