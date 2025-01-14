@@ -69,7 +69,7 @@ const RESTORATION_OPTIONS = {
 		},
 		acousticOptimization: {
 			label: "Optimisation acoustique",
-			price: 20,
+			price: 10,
 			description: "",
 		},
 		newButtons: {
