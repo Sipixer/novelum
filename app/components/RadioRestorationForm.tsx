@@ -23,22 +23,81 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import TISSU_1 from "@/assets/images/tissus/IMG_0702.jpg";
+import TISSU_2 from "@/assets/images/tissus/IMG_0703.jpg";
+import TISSU_3 from "@/assets/images/tissus/IMG_0705.jpg";
+import TISSU_4 from "@/assets/images/tissus/IMG_0707.jpg";
+import TISSU_5 from "@/assets/images/tissus/IMG_0710.jpg";
 import { X } from "lucide-react";
 import { type ChangeEventHandler, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import ThankYouModal from "./ThankYouModal";
 
-const BASE_PRICE = 390;
-const ADDITIONAL_OPTIONS_PRICES = {
-	passiveRadiator: 30,
-	additionalHifiOutput: 30,
-	rcaAudioInput: 30,
-	magicEye: 40,
-	acousticOptimization: 20,
-	newButtons: 25,
-	betterVarnish: 30,
-	speakerBreakIn: 30,
+const RESTORATION_OPTIONS = {
+	base: {
+		price: 390,
+		features: [
+			"Installation d'un amplificateur 50 W et d'un système Bluetooth 5.0 AptX",
+			"Remplacement du haut-parleur d'origine par un haut-parleur de haute qualité « Focal » (France)",
+			"Vernissage ou lustrage selon le type de radio restauré (bakélite ou bois) ; suppression des rayures et des faibles impacts",
+			"Rétro-éclairage fonctionnant comme à l'origine",
+			"Bouton pour le ON/OFF (d'origine en fonction du modèle de radio) et le réglage du volume en façade",
+			"Livraison (envoi/retour)",
+		],
+	},
+	additional: {
+		passiveRadiator: {
+			label: "Radiateur passif",
+			price: 30,
+			description: "Augmentation mécanique des basses",
+		},
+		additionalHifiOutput: {
+			label: "Sortie HIFI supplémentaire",
+			price: 30,
+			description: "",
+		},
+		rcaAudioInput: {
+			label: "Entrée audio RCA",
+			price: 30,
+			description: "",
+		},
+		magicEye: {
+			label: "Œil magique fonctionnel",
+			price: 40,
+			description: "",
+		},
+		acousticOptimization: {
+			label: "Optimisation acoustique",
+			price: 20,
+			description: "",
+		},
+		newButtons: {
+			label: "Nouveaux boutons",
+			price: 25,
+			description: "Préférable si absents",
+		},
+		betterVarnish: {
+			label: "Vernis haute qualité",
+			price: 30,
+			description: "",
+		},
+		speakerBreakIn: {
+			label: "Rodage haut-parleur",
+			price: 30,
+			description: "",
+		},
+	},
+	fabric: {
+		price: 30,
+		options: [
+			{ value: "1", img: TISSU_1 },
+			{ value: "2", img: TISSU_2 },
+			{ value: "3", img: TISSU_3 },
+			{ value: "4", img: TISSU_4 },
+			{ value: "5", img: TISSU_5 },
+		],
+	},
 };
 
 const formSchema = z.object({
@@ -46,7 +105,7 @@ const formSchema = z.object({
 		passiveRadiator: z.boolean().default(false),
 		additionalHifiOutput: z.boolean().default(false),
 		rcaAudioInput: z.boolean().default(false),
-		fabricType: z.enum(["moderne", "classique", "vintage"]).optional(),
+		fabricType: z.enum(["1", "2", "3", "4", "5"]).optional(),
 		magicEye: z.boolean().default(false),
 		acousticOptimization: z.boolean().default(false),
 		newButtons: z.boolean().default(false),
@@ -56,7 +115,13 @@ const formSchema = z.object({
 	contactInfo: z.object({
 		lastName: z.string().min(2, "Le nom est requis"),
 		firstName: z.string().min(2, "Le prénom est requis"),
-		phone: z.string().min(10, "Numéro de téléphone invalide"),
+		phone: z
+			.string()
+			.optional() // Rend le champ facultatif
+			.refine((val) => !val || val.length >= 10, {
+				message:
+					"Numéro de téléphone invalide, il doit contenir au moins 10 caractères.",
+			}),
 		email: z.string().email("Email invalide"),
 	}),
 	remarks: z.string(),
@@ -65,7 +130,7 @@ const formSchema = z.object({
 export function RadioRestorationForm() {
 	const [thanksOpen, setThanksOpen] = useState(false);
 	const [selectedImages, setSelectedImages] = useState<File[]>([]);
-	const [totalEstimation, setTotalEstimation] = useState(BASE_PRICE);
+	const [wantNewTissu, setWantNewTissu] = useState(false);
 
 	const maxImages = 5;
 	const maxSize = 5 * 1024 * 1024; // 5Mo en bytes
@@ -76,7 +141,6 @@ export function RadioRestorationForm() {
 				passiveRadiator: false,
 				additionalHifiOutput: false,
 				rcaAudioInput: false,
-				fabricType: "moderne",
 				magicEye: false,
 				acousticOptimization: false,
 				newButtons: false,
@@ -104,7 +168,7 @@ export function RadioRestorationForm() {
 			magicEye: "Magic Eye",
 			acousticOptimization: "Optimisation acoustique",
 			newButtons: "Nouveaux boutons",
-			betterVarnish: "Meilleur vernis",
+			betterVarnish: "Vernis Haute Qualité",
 			speakerBreakIn: "Rodage des enceintes",
 		};
 
@@ -221,7 +285,7 @@ export function RadioRestorationForm() {
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		const DISCORD_WEBHOOK_URL =
-			"https://discord.com/api/webhooks/1075500488310653102/Gj6JNnHhmtU-MRw2_77QaSGDmh-Bu4STGtvphAIK093_aYuKVmvw4OB4Y5CXg0W-rQAA";
+			"https://discord.com/api/webhooks/1328830663830540358/B7aoe8m8cuKeN3bfzH9TUoFr48FaMvRW_PYhNy-xtzxi3yN5C4pLbAgugCdRhc3UPulS";
 
 		try {
 			const result = await sendToDiscord(
@@ -233,6 +297,7 @@ export function RadioRestorationForm() {
 				setThanksOpen(true);
 				form.reset();
 				setSelectedImages([]);
+				setWantNewTissu(false);
 			} else {
 				// Afficher un message d'erreur
 				alert(
@@ -247,27 +312,14 @@ export function RadioRestorationForm() {
 		}
 	}
 
-	// Observer les changements dans le formulaire pour mettre à jour l'estimation
-	useEffect(() => {
-		const subscription = form.watch((value) => {
-			const additionalOptions = value.additionalOptions;
-			let total = BASE_PRICE;
-
-			// Calculer le total des options supplémentaires
-			for (const [key, isSelected] of Object.entries(additionalOptions ?? {})) {
-				if (isSelected === true && key in ADDITIONAL_OPTIONS_PRICES) {
-					total +=
-						ADDITIONAL_OPTIONS_PRICES[
-							key as keyof typeof ADDITIONAL_OPTIONS_PRICES
-						];
-				}
-			}
-
-			setTotalEstimation(total);
-		});
-
-		return () => subscription.unsubscribe();
-	}, [form.watch]);
+	const totalEstimation = Object.entries(form.watch().additionalOptions).reduce(
+		(acc, [key, value]) => {
+			const option = RESTORATION_OPTIONS.additional[key];
+			if (!option) return acc;
+			return acc + (value ? option.price : 0);
+		},
+		RESTORATION_OPTIONS.base.price + (wantNewTissu ? 30 : 0),
+	);
 
 	return (
 		<>
@@ -323,166 +375,140 @@ export function RadioRestorationForm() {
 									Opérations supplémentaires (Optionnelles)
 								</h3>
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-									{(
-										[
-											{
-												name: "passiveRadiator",
-												label: "Radiateur passif",
-												price: 30,
-												description: "Augmentation mécanique des basses",
-											},
-											{
-												name: "additionalHifiOutput",
-												label: "Sortie HIFI supplémentaire",
-												price: 30,
-												description: "",
-											},
-											{
-												name: "rcaAudioInput",
-												label: "Entrée audio RCA",
-												price: 30,
-												description: "",
-											},
-											{
-												name: "magicEye",
-												label: "Œil magique fonctionnel",
-												price: 40,
-												description: "",
-											},
-											{
-												name: "acousticOptimization",
-												label: "Optimisation acoustique",
-												price: 20,
-												description: "",
-											},
-											{
-												name: "newButtons",
-												label: "Nouveaux boutons",
-												price: 25,
-												description: "Préférable si absents",
-											},
-											{
-												name: "betterVarnish",
-												label: "Vernis de meilleure qualité",
-												price: 30,
-												description: "",
-											},
-											{
-												name: "speakerBreakIn",
-												label: "Rodage haut-parleur",
-												price: 30,
-												description: "",
-											},
-										] as const
-									).map((option) => (
-										<FormField
-											key={option.name}
-											control={form.control}
-											name={`additionalOptions.${option.name}`}
-											render={({ field }) => (
-												<button
-													type="button"
-													className="flex flex-row items-start space-x-3 space-y-0 text-left rounded-md border p-4 cursor-pointer hover:bg-gray-50"
-													onClick={() => {
-														const newValue = !field.value;
-														form.setValue(
-															`additionalOptions.${option.name}`,
-															newValue,
-															{
-																shouldValidate: true,
-																shouldDirty: true,
-																shouldTouch: true,
-															},
-														);
-													}}
-												>
-													<div
-														onClick={(e) => e.stopPropagation()}
-														onKeyUp={(e) => e.stopPropagation()}
+									{Object.entries(RESTORATION_OPTIONS.additional).map(
+										([key, option]) => (
+											<FormField
+												key={key}
+												control={form.control}
+												name={`additionalOptions.${key}`}
+												render={({ field }) => (
+													<button
+														type="button"
+														className="flex flex-row items-start space-x-3 space-y-0 text-left rounded-md border p-4 cursor-pointer hover:bg-gray-50"
+														onClick={() => {
+															const newValue = !field.value;
+															form.setValue(
+																`additionalOptions.${key}`,
+																newValue,
+																{
+																	shouldValidate: true,
+																	shouldDirty: true,
+																	shouldTouch: true,
+																},
+															);
+														}}
 													>
-														<Checkbox checked={field.value} />
-													</div>
-
-													<div className="space-y-1 leading-none">
-														<FormLabel>{option.label}</FormLabel>
-														<FormDescription>
-															{option.price} €{" "}
-															{option.description && `- ${option.description}`}
-														</FormDescription>
-													</div>
-												</button>
-											)}
-										/>
-									))}
+														<div
+															onClick={(e) => e.stopPropagation()}
+															onKeyUp={(e) => e.stopPropagation()}
+														>
+															<Checkbox checked={field.value} />
+														</div>
+														<div className="space-y-1 leading-none">
+															<FormLabel>{option.label}</FormLabel>
+															<FormDescription>
+																{option.price} €{" "}
+																{option.description &&
+																	`- ${option.description}`}
+															</FormDescription>
+														</div>
+													</button>
+												)}
+											/>
+										),
+									)}
 								</div>
 							</div>
+							<button
+								type="button"
+								className="flex flex-row items-start space-x-3 space-y-0 text-left rounded-md border p-4 cursor-pointer hover:bg-gray-50"
+								onClick={() => {
+									setWantNewTissu((prev) => !prev);
+									//remove selected fabric type if the user unchecks the checkbox
+									if (!wantNewTissu) {
+										form.setValue("additionalOptions.fabricType", undefined);
+									}
+								}}
+							>
+								<div
+									onClick={(e) => e.stopPropagation()}
+									onKeyUp={(e) => e.stopPropagation()}
+								>
+									<Checkbox checked={wantNewTissu} />
+								</div>
 
-							<FormField
-								control={form.control}
-								name="additionalOptions.fabricType"
-								render={({ field }) => (
-									<FormItem className="space-y-4">
-										<FormLabel className="text-lg font-medium">
-											Choix du tissu
-										</FormLabel>
-										<RadioGroup
-											onValueChange={field.onChange}
-											value={field.value}
-											className="grid grid-cols-1 sm:grid-cols-3 gap-4"
-										>
-											{[
-												{
-													value: "vintage",
-													label: "Tissu Vintage",
-													img: "/api/placeholder/200/200",
-												},
-												{
-													value: "moderne",
-													label: "Tissu Moderne",
-													img: "/api/placeholder/200/200",
-												},
-												{
-													value: "classique",
-													label: "Tissu Classique",
-													img: "/api/placeholder/200/200",
-												},
-											].map((fabric) => (
-												<div key={fabric.value} className="relative">
-													<label
-														htmlFor={fabric.value}
-														className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 cursor-pointer transition-all
-                    ${
-											field.value === fabric.value
-												? "border-blue-500 bg-blue-50"
-												: "border-gray-200 hover:bg-gray-50"
-										}`}
-													>
-														<RadioGroupItem
-															value={fabric.value}
-															id={fabric.value}
-															className="sr-only"
-														/>
-														<img
-															src={fabric.img}
-															alt={fabric.label}
-															className="w-full object-cover rounded"
-														/>
-														<span
-															className={`font-medium ${
-																field.value === fabric.value
-																	? "text-blue-600"
-																	: ""
-															}`}
+								<div className="space-y-1 leading-none">
+									<FormLabel>Changement du tissu</FormLabel>
+									<FormDescription>
+										30 € - Choisissez parmi nos tissus
+									</FormDescription>
+								</div>
+							</button>
+
+							{wantNewTissu && (
+								<FormField
+									control={form.control}
+									name="additionalOptions.fabricType"
+									render={({ field }) => (
+										<FormItem className="space-y-4">
+											<FormLabel className="text-lg font-medium">
+												Choix du tissu
+											</FormLabel>
+											<RadioGroup
+												onValueChange={field.onChange}
+												value={field.value}
+												className="grid grid-cols-1 sm:grid-cols-5 gap-4"
+											>
+												{[
+													{
+														value: "1",
+														img: TISSU_1,
+													},
+													{
+														value: "2",
+														img: TISSU_2,
+													},
+													{
+														value: "3",
+														img: TISSU_3,
+													},
+													{
+														value: "4",
+														img: TISSU_4,
+													},
+													{
+														value: "5",
+														img: TISSU_5,
+													},
+												].map((fabric) => (
+													<div key={fabric.value} className="relative">
+														<label
+															htmlFor={fabric.value}
+															className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 cursor-pointer transition-all
+${
+	field.value === fabric.value
+		? "border-blue-500 bg-blue-50"
+		: "border-gray-200 hover:bg-gray-50"
+}`}
 														>
-															{fabric.label}
-														</span>
-													</label>
-												</div>
-											))}
-										</RadioGroup>
-									</FormItem>
-								)}
-							/>
+															<RadioGroupItem
+																value={fabric.value}
+																id={fabric.value}
+																className="sr-only"
+															/>
+															<img
+																src={fabric.img}
+																alt={`Tissu ${fabric.value}`}
+																className="w-full max-h-64 object-contain rounded"
+															/>
+														</label>
+													</div>
+												))}
+											</RadioGroup>
+										</FormItem>
+									)}
+								/>
+							)}
 
 							<Separator />
 
