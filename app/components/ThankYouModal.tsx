@@ -42,7 +42,7 @@ export default function ThankYouModal({
 				<div className="text-sm text-center mt-4">
 					Cordialement,
 					<br />
-					L'équipe Nouvelum
+					L'équipe Novelum
 				</div>
 			</DialogContent>
 		</Dialog>

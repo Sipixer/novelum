@@ -160,29 +160,26 @@ export function RadioRestorationForm() {
 	function formatAdditionalOptions(
 		options: z.infer<typeof formSchema>["additionalOptions"],
 	) {
-		const translations: { [key: string]: string } = {
-			passiveRadiator: "Radiateur passif",
-			additionalHifiOutput: "Sortie Hi-Fi additionnelle",
-			rcaAudioInput: "Entrée audio RCA",
-			fabricType: "Type de tissu",
-			magicEye: "Magic Eye",
-			acousticOptimization: "Optimisation acoustique",
-			newButtons: "Nouveaux boutons",
-			betterVarnish: "Vernis Haute Qualité",
-			speakerBreakIn: "Rodage des enceintes",
-		};
+		const selectedOptions = Object.entries(options).filter(
+			([_, value]) => value,
+		);
 
-		return Object.entries(options)
-			.filter(
-				([_, value]) => value === true || (typeof value === "string" && value),
-			)
-			.map(([key, value]) => {
-				if (typeof value === "string") {
-					return `${translations[key]}: ${value}`;
-				}
-				return translations[key];
-			})
-			.join("\n");
+		if (selectedOptions.length === 0) {
+			return null;
+		}
+
+		const formattedOptions = selectedOptions.map(([key, _]) => {
+			const option = RESTORATION_OPTIONS.additional[key];
+			if (!option) return null;
+			return `**${option.label}** - ${option.price} €`;
+		});
+
+		if (wantNewTissu)
+			formattedOptions.push(
+				`**Changement de tissu** - type ${options.fabricType} - 30 €`,
+			);
+
+		return formattedOptions.join("\n");
 	}
 
 	// Fonction principale pour envoyer les données vers Discord
