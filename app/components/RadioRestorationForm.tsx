@@ -127,7 +127,11 @@ const formSchema = z.object({
 	remarks: z.string(),
 });
 
-export function RadioRestorationForm() {
+export function RadioRestorationForm({
+	webhookUrl,
+}: {
+	webhookUrl: string;
+}) {
 	const [thanksOpen, setThanksOpen] = useState(false);
 	const [selectedImages, setSelectedImages] = useState<File[]>([]);
 	const [wantNewTissu, setWantNewTissu] = useState(false);
@@ -281,9 +285,7 @@ export function RadioRestorationForm() {
 	};
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		const DISCORD_WEBHOOK_URL =
-			"https://discord.com/api/webhooks/1328830663830540358/B7aoe8m8cuKeN3bfzH9TUoFr48FaMvRW_PYhNy-xtzxi3yN5C4pLbAgugCdRhc3UPulS";
-
+		const DISCORD_WEBHOOK_URL = webhookUrl;
 		try {
 			const result = await sendToDiscord(
 				values,
