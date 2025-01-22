@@ -1,15 +1,19 @@
+import { Link } from "@remix-run/react";
 import { motion } from "framer-motion";
 import type { HTMLAttributes } from "react";
+import { Button } from "./ui/button";
 
 export const IntroSection = ({
 	title,
 	description,
 	imageSrc,
+	cta,
 	...props
 }: {
 	title: string;
 	description: string;
 	imageSrc?: string; // imageSrc est maintenant optionnel
+	cta?: boolean;
 } & HTMLAttributes<HTMLDivElement>) => {
 	return (
 		<motion.div
@@ -69,6 +73,13 @@ export const IntroSection = ({
 						</span>
 					))}
 				</motion.p>
+				{cta && (
+					<div className="mt-3">
+						<Link to="/moderniser">
+							<Button>Moderniser votre radio</Button>
+						</Link>
+					</div>
+				)}
 			</div>
 			{imageSrc && (
 				<motion.div

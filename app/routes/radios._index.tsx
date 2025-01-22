@@ -68,6 +68,7 @@ export default function Radios() {
                 d'écoute inégalée."
 						imageSrc={HeroImage}
 						className="pt-14"
+						cta
 					/>
 					<h4 className="text-2xl font-bold text-stone-800 mt-12 mb-8">
 						Nos Radios
