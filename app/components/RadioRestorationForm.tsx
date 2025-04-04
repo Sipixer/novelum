@@ -43,7 +43,7 @@ import {
 
 const RESTORATION_OPTIONS = {
 	base: {
-		price: 390,
+		price: 420,
 		features: [
 			"Installation d'un amplificateur 50 W et d'un système Bluetooth 5.0 AptX",
 			"Remplacement du haut-parleur d'origine par un haut-parleur de haute qualité « Focal » (France)",
@@ -376,7 +376,7 @@ export function RadioRestorationForm({
 									<li>Livraison (envoi/retour)</li>
 								</ul>
 								<p className="font-semibold">
-									Prix de la formule de base : 390 €
+									Prix de la formule de base : 420 €
 								</p>
 								<FormField
 									control={form.control}
