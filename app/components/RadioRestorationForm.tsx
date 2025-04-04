@@ -33,6 +33,13 @@ import { type ChangeEventHandler, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import ThankYouModal from "./ThankYouModal";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "./ui/select";
 
 const RESTORATION_OPTIONS = {
 	base: {
@@ -112,6 +119,7 @@ const formSchema = z.object({
 		betterVarnish: z.boolean().default(false),
 		speakerBreakIn: z.boolean().default(false),
 	}),
+	radioType: z.enum(["portable", "fixe"]).default("portable"),
 	contactInfo: z.object({
 		lastName: z.string().min(2, "Le nom est requis"),
 		firstName: z.string().min(2, "Le prénom est requis"),
@@ -141,6 +149,7 @@ export function RadioRestorationForm({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
+			radioType: "portable",
 			additionalOptions: {
 				passiveRadiator: false,
 				additionalHifiOutput: false,
@@ -209,6 +218,11 @@ export function RadioRestorationForm({
 **Prénom:** ${values.contactInfo.firstName}
 **Téléphone:** ${values.contactInfo.phone}
 **Email:** ${values.contactInfo.email}`,
+								inline: false,
+							},
+							{
+								name: "Type de radio",
+								value: values.radioType === "fixe" ? "Fixe" : "Portable",
 								inline: false,
 							},
 							{
@@ -364,7 +378,32 @@ export function RadioRestorationForm({
 								<p className="font-semibold">
 									Prix de la formule de base : 390 €
 								</p>
+								<FormField
+									control={form.control}
+									name="radioType"
+									render={({ field }) => (
+										<FormItem className="max-w-sm">
+											<FormLabel>Type de radio</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Type de radio" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													<SelectItem value="portable">Portable</SelectItem>
+													<SelectItem value="fixe">Fixe</SelectItem>
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
 							</div>
+							{/* radio type select */}
 
 							<Separator />
 
